@@ -4,31 +4,98 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StoneheartSMP</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="favicon.ico" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; color: #222; }
-    header { background: #2c3e50; color: white; text-align: center; padding: 2rem 1rem; }
-    .hero-image {
-      width: 100%; height: 300px;
-      background: url('titelbild.jpg') center/cover no-repeat;
+    :root {
+      --primary: #2c3e50;
+      --accent: #1abc9c;
+      --light: #ecf0f1;
+      --text: #2c3e50;
+      --bg: #f4f4f4;
     }
-    nav { background: #34495e; display: flex; justify-content: center; flex-wrap: wrap; }
-    nav a { color: white; text-decoration: none; margin: 1rem; padding: 0.5rem 1rem; }
-    nav a:hover { background: #1abc9c; border-radius: 5px; }
-    main { padding: 2rem 1rem; max-width: 1000px; margin: auto; }
-    section { margin-bottom: 3rem; }
-    h1, h2 { color: #2c3e50; }
-    .join-info { background: #ecf0f1; padding: 1.5rem; border-left: 5px solid #3498db; }
-    .playercount { font-weight: bold; font-size: 1.2rem; color: #27ae60; margin-top: 0.5rem; }
-    footer { text-align: center; padding: 2rem 1rem; background: #bdc3c7; color: #2c3e50; }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)), url('titelbild.jpg') center/cover no-repeat;
+      color: white;
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: var(--primary);
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 1rem 1.5rem;
+      display: block;
+    }
+
+    nav a:hover {
+      background-color: var(--accent);
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .playercount {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    footer {
+      background: #bdc3c7;
+      color: var(--primary);
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 1rem; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="hero-image"></div>
-
-  <header>
+  <header class="hero">
     <h1>StoneheartSMP</h1>
     <p>Ein Survival-Minecraft-Erlebnis mit Herz</p>
   </header>
@@ -43,31 +110,32 @@
     <section id="about">
       <h2>Was ist StoneheartSMP?</h2>
       <p>
-        StoneheartSMP ist ein deutschsprachiger Minecraft-Server, der auf Survival, Fairplay und
-        Community setzt. Keine Pay2Win-Ränge, keine unnötige Pluginsflut – nur echtes Minecraft.
+        StoneheartSMP ist ein Minecraft-Server, der auf echtes Survival, Community und faires Gameplay setzt.
+        Keine Pay2Win-Ränge – dafür spannende Abenteuer mit echten Spielern.
       </p>
     </section>
 
-    <section id="join" class="join-info">
-      <h2>So trittst du bei:</h2>
-      <p><strong>Java IP:</strong> <code>amount-labs.gl.joinmc.link</code></p>
+    <section id="join">
+      <h2>Mitspielen</h2>
+      <p><strong>Java IP:</strong> <code>stoneheartsmp.de</code></p>
       <p><strong>Version:</strong> 1.20+</p>
-      <p><strong>Whitelist:</strong> Nein – Jeder kann mitspielen!</p>
-      <p class="playercount">Spieler online: <span id="players">Wird geladen...</span></p>
+      <p><strong>Whitelist:</strong> Keine – jeder kann mitmachen!</p>
+      <div class="playercount">Spieler online: <span id="players">Wird geladen...</span></div>
     </section>
 
     <section id="contact">
       <h2>Kontakt</h2>
-      <p>Fragen oder Vorschläge? Schreib uns einfach eine E-Mail:</p>
-      <p><a="mailto:stoneheartsmplaytowin@gmail.com">stoneheartsmplaytowin@gmail.com</a></p>
+      <p>Du hast Fragen oder Feedback? Schreib uns:</p>
+      <p><a href="mailto:stoneheartsmplaytowin@gmail.com">stoneheartsmplaytowin@gmail.com</a></p>
     </section>
   </main>
+
   <footer>
-    <p>&copy; 2025 StoneheartSMP – Ein Projekt von der Community, für die Community.</p>
+    &copy; 2025 StoneheartSMP – gebaut für die Community.
   </footer>
 
   <script>
-    fetch("https://mcapi.us/server/status?ip=amount-labs.gl.joinmc.link")
+    fetch("https://mcapi.us/server/status?ip=stoneheartsmp.de")
       .then(res => res.json())
       .then(data => {
         document.getElementById("players").textContent =
@@ -77,5 +145,6 @@
         document.getElementById("players").textContent = "Fehler beim Laden";
       });
   </script>
+
 </body>
 </html>
