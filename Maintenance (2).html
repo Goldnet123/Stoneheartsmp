@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance - Goldnet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: fadeIn 1s forwards;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Animation für sanften Start */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .light-mode {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Admin Login */
+        .top-bar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .admin-input {
+            padding: 5px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            background: #222;
+            color: white;
+        }
+
+        .admin-btn, .mode-toggle-btn, .language-toggle-btn {
+            background-color: #FFD700;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+
+        .admin-btn:hover, .mode-toggle-btn:hover, .language-toggle-btn:hover {
+            background-color: #FFA500;
+            transform: scale(1.1);
+        }
+
+        /* Centered Content */
+        .container {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: slideIn 1s forwards 0.5s;
+        }
+
+        /* Animation für den Hauptinhalt */
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 36px;
+            letter-spacing: 2px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        /* Loader */
+        .loader {
+            border: 4px solid transparent;
+            border-top: 4px solid #FFD700;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            position: absolute;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            font-size: 14px;
+            margin-top: 50px;
+            color: #aaa;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 30px; }
+            p { font-size: 16px; }
+            .mode-toggle-btn, .language-toggle-btn, .admin-btn { padding: 6px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Admin Login -->
+    <div class="top-bar">
+        <span id="admin-label">Admin:</span>
+        <input type="password" id="admin-password" class="admin-input" placeholder="Enter password">
+        <button class="admin-btn" onclick="checkAdmin()">Login</button>
+    </div>
+
+    <!-- Top Right Buttons -->
+    <div class="top-right" style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px;">
+        <button class="mode-toggle-btn" id="toggle-mode">Light Mode</button>
+        <button class="language-toggle-btn" id="toggle-language">EN</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1 id="title">Goldnet Website is under maintenance</h1>
+        <p id="description">We are working to improve the website. Please be patient.</p>
+
+        <div class="contact-info">
+            <p>For urgent inquiries, please contact us at: <a href="mailto:goldnet.offical@gmail.com" style="color: #FFD700;">goldnet.offical@gmail.com</a></p>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Goldnet. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Loader (Unten mittig) -->
+    <div class="loader"></div>
+
+    <script>
+        // Dark Mode Umschalten
+        let isDarkMode = true;
+
+        // Beim Laden der Seite den initialen Modus festlegen
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.toggle('light-mode', !isDarkMode);
+            document.getElementById('toggle-mode').textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+        });
+
+        // Light/Dark Mode Umschaltung
+        document.getElementById('toggle-mode').addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('light-mode', !isDarkMode);
+            document.getElementById('toggle-mode').textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+        });
+
+        // Sprachumschaltung
+        let isEnglish = true;
+        const englishText = { title: "Goldnet Website is under maintenance", description: "We are working to improve the website. Please be patient.", admin: "Admin:", contact: "For urgent inquiries, please contact us at:", footer: "&copy; 2025 Goldnet. All rights reserved." };
+        const germanText = { title: "Goldnet Website ist in Wartung", description: "Wir arbeiten daran, die Website zu verbessern. Bitte haben Sie Geduld.", admin: "Admin:", contact: "Für dringende Anfragen kontaktieren Sie uns bitte unter:", footer: "&copy; 2025 Goldnet. Alle Rechte vorbehalten." };
+
+        document.getElementById('toggle-language').addEventListener('click', () => {
+            isEnglish = !isEnglish;
+            const text = isEnglish ? englishText : germanText;
+            document.getElementById('title').textContent = text.title;
+            document.getElementById('description').textContent = text.description;
+            document.getElementById('admin-label').textContent = text.admin;
+            document.querySelector(".contact-info p").innerHTML = text.contact + " <a href='mailto:goldnet.offical@gmail.com' style='color: #FFD700;'>goldnet.offical@gmail.com</a>";
+            document.querySelector("footer p").innerHTML = text.footer;
+            document.getElementById('toggle-language').textContent = isEnglish ? 'EN' : 'DE';
+            document.getElementById("admin-password").placeholder = isEnglish ? "Enter password" : "Passwort eingeben";
+        });
+
+        // Admin-Login Funktion
+        function checkAdmin() {
+            const password = document.getElementById("admin-password").value;
+            if (password === "Ben1310") {
+                window.location.href = "https://goldnet.pages.dev/index.html?Ben091312%";
+            } else {
+                alert(isEnglish ? "Incorrect password!" : "Falsches Passwort!");
+            }
+        }
+    </script>
+</body>
+</html>
