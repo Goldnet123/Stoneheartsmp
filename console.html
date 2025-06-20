@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>Minecraft Server Web-Konsole</title>
+<style>
+  body { background: #121212; color: #0f0; font-family: monospace; }
+  #console { background: #000; height: 400px; overflow-y: scroll; padding: 10px; border: 1px solid #0f0; }
+  #input { width: 100%; padding: 10px; background: #222; color: #0f0; border: 1px solid #0f0; }
+</style>
+</head>
+<body>
+<h1>Minecraft Server Web-Konsole</h1>
+<pre id="console"></pre>
+<input id="input" placeholder="Befehl eingeben..." autocomplete="off" />
+
+<script>
+  const authId = "DEINE_AUTH_ID_HIER"; // Hier die ID aus der plugin config eintragen
+  const ws = new WebSocket("ws://localhost:8080");
+  const consoleEl = document.getElementById("console");
+  const input = document.getElementById("input");
+
+  ws.onopen = () => {
+    logToConsole("Verbinde... Authentifiziere...");
+    ws.send(authId);
+  };
+
+  ws.onmessage = (event) => {
+    if (event.data === "AUTH_OK") {
+      logToConsole("Authentifizierung erfolgreich. Du kannst Befehle eingeben.");
+    } else if (event.data === "AUTH_FAIL") {
+      logToConsole("Authentifizierung fehlgeschlagen. Verbindung wird geschlossen.");
+      ws.close();
+    } else {
+      logToConsole(event.data);
+    }
+  };
+
+  ws.onclose = () => {
+    logToConsole("Verbindung geschlossen.");
+  };
+
+  ws.onerror = (e) => {
+    logToConsole("WebSocket Fehler.");
+  };
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter" && ws.readyState === WebSocket.OPEN) {
+      const cmd = input.value.trim();
+      if (cmd.length > 0) {
+        ws.send(cmd);
+        logToConsole("> " + cmd);
+        input.value = "";
+      }
+    }
+  });
+
+  function logToConsole(text) {
+    consoleEl.textContent += text + "\n";
+    consoleEl.scrollTop = consoleEl.scrollHeight;
+  }
+</script>
+</body>
+</html>
