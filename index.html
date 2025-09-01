@@ -68,6 +68,12 @@ h2 { font-size:2rem; margin-bottom:40px; text-align:center; color:#ff6f61; text-
 .feature.visible { opacity:1; transform: translateY(0); transition:0.6s ease-out; }
 .feature:hover { background:rgba(255,111,97,0.2); box-shadow:0 0 15px #ff6f61; }
 
+/* Contact & Messages */
+.contact { text-align:center; margin-top:60px; }
+.contact p { margin-bottom:15px; font-size:1rem; }
+.contact a.btn { font-size:1rem; padding:12px 24px; }
+#recentMessages { max-height:300px; overflow-y:auto; padding:10px; background:rgba(255,255,255,0.05); border-radius:8px; margin-bottom:20px; text-align:left; }
+
 /* Footer */
 footer { text-align:center; padding:20px; background:#090c16; font-size:0.9rem; color:#888; }
 
@@ -81,6 +87,7 @@ body.light header { background: linear-gradient(135deg,#ddd,#bbb); }
 body.light a { color:#ff6f61; }
 body.light a:hover { color:#ff4500; }
 body.light .feature { background: rgba(0,0,0,0.05); }
+body.light #recentMessages { background: rgba(0,0,0,0.05); }
 body.light footer { background:#e0e0e0; color:#555; }
 </style>
 </head>
@@ -108,9 +115,16 @@ body.light footer { background:#e0e0e0; color:#555; }
 
 <!-- Contact Section -->
 <section class="contact">
-  <h2>Kontakt & Community</h2>
-  <p>E-Mail: <a href="mailto:stoneheartsmp@realgamergerman.de">stoneheartsmp@realgamergerman.de</a></p>
-  <p>Discord: <a href="https://discord.gg/5K9fYQzpkC" target="_blank">Hier beitreten</a></p>
+  <h2>Nachricht an Discord</h2>
+  <form id="discordForm">
+    <input type="text" id="username" placeholder="Dein Name" required style="padding:8px;width:200px;margin-right:10px;">
+    <input type="text" id="message" placeholder="Deine Nachricht" required style="padding:8px;width:400px;margin-right:10px;">
+    <button type="submit" class="btn">Senden</button>
+  </form>
+  <p id="formStatus" style="margin-top:10px;color:#ffb366;"></p>
+
+  <h2>Nachrichten der letzten 10 Minuten</h2>
+  <div id="recentMessages">Lade Nachrichten...</div>
 </section>
 
 <!-- Footer -->
@@ -160,6 +174,50 @@ async function updateServerStatus() {
 }
 updateServerStatus();
 setInterval(updateServerStatus, 30000);
+
+// Discord Nachrichten-Formular
+const form = document.getElementById('discordForm');
+const status = document.getElementById('formStatus');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const username = document.getElementById('username').value;
+  const message = document.getElementById('message').value;
+
+  try {
+    const res = await fetch('/sendDiscordMessage', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({username, message})
+    });
+
+    if(res.ok) {
+      status.textContent = "Nachricht gesendet ✅";
+      form.reset();
+      fetchRecentMessages();
+    } else {
+      status.textContent = "Fehler beim Senden ❌";
+    }
+  } catch(err) {
+    console.error(err);
+    status.textContent = "Fehler beim Senden ❌";
+  }
+});
+
+// Nachrichten der letzten 10 Minuten
+async function fetchRecentMessages() {
+  try {
+    const res = await fetch('/recentMessages');
+    const data = await res.json();
+    const container = document.getElementById('recentMessages');
+    if(data.length === 0) {
+      container.innerHTML = "<i>Keine Nachrichten in den letzten 10 Minuten.</i>";
+      return;
+    }
+    container.innerHTML = data.map(m => `<b>${m.username}:</b> ${m.message}`).join("<br>");
+  } catch(err) { console.error(err); }
+}
+fetchRecentMessages();
+setInterval(fetchRecentMessages, 10000);
 </script>
 
 </body>
