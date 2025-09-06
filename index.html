@@ -98,6 +98,7 @@ body.light footer { background:#e0e0e0; color:#555; }
 <!-- Features Section -->
 <section>
   <h2>Server-Features</h2>
+  <div class="features">
     <div class="feature"><h3>Community Events</h3><p>Regelmäßige Kriege, Bauwettbewerbe und spannende Aktionen.</p></div>
     <div class="feature"><h3>Essentielle Plugins</h3><p>Verbessere dein Spielerlebnis mit nützlichen Plugins für Survival.</p></div>
     <div class="feature"><h3>Aktive Moderation</h3><p>Ein engagiertes Team sorgt für ein faires und sicheres Umfeld.</p></div>
@@ -129,12 +130,26 @@ function revealFeatures() {
 window.addEventListener('scroll', revealFeatures);
 window.addEventListener('load', revealFeatures);
 
-// Dark / Light Mode Toggle
+// Dark / Light Mode Toggle mit Speicherung
 const modeBtn = document.getElementById('modeToggle');
+
+// Beim Laden prüfen, ob ein Modus gespeichert ist
+if(localStorage.getItem('theme') === 'light') {
+  document.body.classList.add('light');
+  modeBtn.textContent = '🌙';
+} else {
+  modeBtn.textContent = '☀️';
+}
+
 modeBtn.addEventListener('click', () => {
   document.body.classList.toggle('light');
-  if(document.body.classList.contains('light')) modeBtn.textContent = '🌙';
-  else modeBtn.textContent = '☀️';
+  if(document.body.classList.contains('light')) {
+    modeBtn.textContent = '🌙';
+    localStorage.setItem('theme', 'light');
+  } else {
+    modeBtn.textContent = '☀️';
+    localStorage.setItem('theme', 'dark');
+  }
 });
 
 // Serverstatus
