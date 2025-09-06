@@ -29,7 +29,7 @@
     if (event.data === "AUTH_OK") {
       logToConsole("Authentifizierung erfolgreich. Du kannst Befehle eingeben.");
     } else if (event.data === "AUTH_FAIL") {
-      logToConsole("Authentifizierung fehlgeschlagen. Verbindung wird geschlossen.");
+      logToConsole("Zugriff Verweigert. Verbindung wird geschlossen.");
       ws.close();
     } else {
       logToConsole(event.data);
